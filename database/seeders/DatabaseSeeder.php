@@ -27,20 +27,20 @@ class DatabaseSeeder extends Seeder
         $numberValues = [1,2];
         foreach ($numberValues as $keyParent => $valueParent) {
             $parentCreated = Node::create([
-                'title' => 'Parent ' . numberToWords($valueParent, $locale),
+                'title' => numberToWords($valueParent, $locale),
                 'parent_id' => null,
             ]);
             if ($valueParent === 1) {
                 foreach ($numberValues as $keyChild =>  $valueChild) {
                     $childCreated = Node::create([
-                        'title' => 'Child ' .numberToWords($valueChild, $locale). ' of Parent ' .numberToWords($valueParent, $locale),
+                        'title' => numberToWords($valueChild, $locale),
                         'parent_id' => $parentCreated->id,
                     ]);
 
                     if ($valueChild === 1) {
                         foreach ($numberValues as $valueGrandChild) {
                             Node::create([
-                                'title' => 'GrandChild ' .numberToWords($valueGrandChild, $locale). ' of ParentChild ' .numberToWords($valueChild, $locale),
+                                'title' => numberToWords($valueGrandChild, $locale),
                                 'parent_id' => $childCreated->id,
                             ]);
                             

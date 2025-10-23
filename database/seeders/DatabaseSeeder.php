@@ -22,27 +22,28 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-        foreach (["One","Two"] as $keyParent => $valueParent) {
+
+        $locale = app()->getLocale();
+        $numberValues = [1,2];
+        foreach ($numberValues as $keyParent => $valueParent) {
             $parentCreated = Node::create([
-                'title' => 'Parent ' .$valueParent,
+                'title' => 'Parent ' . numberToWords($valueParent, $locale),
                 'parent_id' => null,
             ]);
-            if ($valueParent === 'One') {
-                foreach (["One","Two"] as $keyChild =>  $valueChild) {
+            if ($valueParent === 1) {
+                foreach ($numberValues as $keyChild =>  $valueChild) {
                     $childCreated = Node::create([
-                        'title' => 'Child ' .$valueChild. ' of Parent ' .$valueParent,
+                        'title' => 'Child ' .numberToWords($valueChild, $locale). ' of Parent ' .numberToWords($valueParent, $locale),
                         'parent_id' => $parentCreated->id,
                     ]);
 
-                    if ($valueChild === 'One') {
-                        foreach (["One","Two"] as $valueGrandChild) {
+                    if ($valueChild === 1) {
+                        foreach ($numberValues as $valueGrandChild) {
                             Node::create([
-                                'title' => 'GrandChild ' .$valueGrandChild. ' of ParentChild ' .$valueChild,
+                                'title' => 'GrandChild ' .numberToWords($valueGrandChild, $locale). ' of ParentChild ' .numberToWords($valueChild, $locale),
                                 'parent_id' => $childCreated->id,
                             ]);
-                            if ($valueChild === 'One') {
-
-                            }
+                            
                         }
                     }
                 }

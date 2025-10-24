@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexNodeRequest;
 use App\Http\Requests\StoreNodeRequest;
 use App\Http\Resources\NodeResource;
 use App\Models\Node;
 use App\Services\NodeCreatorService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+
 
 class NodeController extends Controller
 {
@@ -21,29 +21,12 @@ class NodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(IndexNodeRequest $request)
     {
-        $timezone = $request->header('X-Timezone') ?? 'UTC';
-        app()->instance('current.timezone', $timezone);
+        
+        $depth = (int) $request->validated('depth', 1);
 
-        $validator = Validator::make($request->query(), [
-            'depth' => ['nullable','integer','min:1','max:5'], // max 5 para proteger el rendimiento
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid depth parameter', 'errors' => $validator->errors()], 400);
-        }
-
-        $depth = (int) $request->query('depth', 1);
-
-        $relations = [];
-        $relation = 'children';
-        for ($i = 1; $i <= $depth; $i++) {
-            $relations[] = $relation;
-            $relation .= '.children';
-        }
-
-        $nodes = Node::with($relations)
+        $nodes = Node::withDepth($depth)
             ->whereNull('parent_id')
             ->get();
 

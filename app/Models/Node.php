@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Node extends Model
 {
@@ -43,5 +44,15 @@ class Node extends Model
                 return Carbon::parse($value)->setTimezone($timezone)->toDateTimeString();
             },
         );
+    }
+    public function scopeWithDepth(Builder $query, int $depth): Builder
+    {
+        $relations = [];
+        $relation = 'children';
+        for ($i = 1; $i <= $depth; $i++) {
+            $relations[] = $relation;
+            $relation .= '.children';
+        }
+        return $query->with($relations);
     }
 }

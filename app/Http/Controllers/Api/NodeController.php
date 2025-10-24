@@ -66,26 +66,26 @@ class NodeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $node = Node::find($id);
+
+        if (! $node) {
+            return response()->json(['message' => 'Node not found'], 404);
+        }
+
+        if ($node->children()->exists()) {
+            return response()->json([
+                'message' => 'A node with children cannot be deleted.'
+            ], 400);
+        }
+
+        $node->delete();
+
+        return response()->json([
+                'message' => 'Nodo deleted'
+            ], 200);
     }
 }

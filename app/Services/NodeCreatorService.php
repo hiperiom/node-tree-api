@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Node;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 
@@ -33,8 +34,8 @@ class NodeCreatorService
                         $childrenData[] = [
                             'title' => numberToWords($c, $locale),
                             'parent_id' => $parent->id,
-                            'created_at' => now(), 
-                            'updated_at' => now(),
+                            'created_at' => Carbon::now(), 
+                            'updated_at' => Carbon::now(),
                         ];
                     }
                     

@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\NumberConverter;
+use App\Services\NumberConverterService;
 
 if (!function_exists('numberToWords')) {
     /**
@@ -12,7 +12,7 @@ if (!function_exists('numberToWords')) {
         $locale = $locale ?? app()->getLocale();
 
         // Resuelve y llama al servicio
-        $converter = app(NumberConverter::class);
+        $converter = app(NumberConverterService::class);
 
         return $converter->toWords($number, $locale);
     }

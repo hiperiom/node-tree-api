@@ -47,6 +47,16 @@ return [
                     base_path('app'),
                 ],
             ],
+
+            // Para Swagger 2.0 (host)
+            'host' => env('L5_SWAGGER_CONST_HOST', parse_url(env('APP_URL'), PHP_URL_HOST)),
+
+            // Para OpenAPI 3 (servers) — usa la URL completa desde .env
+            'servers' => [
+                [
+                    'url' => env('L5_SWAGGER_CONST_HOST', rtrim(env('APP_URL'), '/')),
+                ],
+            ],
         ],
     ],
     'defaults' => [

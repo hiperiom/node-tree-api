@@ -18,6 +18,17 @@ namespace App\Http\Controllers;
  * url=L5_SWAGGER_CONST_HOST,
  * description="Servidor de la API"
  * )
+ * )
+ *
+ * @OA\Components(
+ * @OA\SecurityScheme(
+ * securityScheme="csrf_token", 
+ * type="apiKey",
+ * in="header",
+ * name="X-CSRF-TOKEN", 
+ * description="Token CSRF requerido por Laravel para solicitudes POST-PUT-DELETE."
+ * )
+ * )
  */
 
 abstract class Controller

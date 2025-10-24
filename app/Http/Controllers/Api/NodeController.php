@@ -27,6 +27,31 @@ use App\Services\NodeCreatorService;
  *   @OA\Property(property="name", type="string"),
  *   @OA\Property(property="parent_id", type="integer", nullable=true)
  * )
+ * @OA\Schema(
+ * schema="NodeCreationRequest",
+ * title="Parámetros de Creación de Nodos",
+ * required={"number_of_parent", "number_of_children"},
+ * @OA\Property(
+ * property="number_of_parent",
+ * type="integer",
+ * description="Número de nodos padre a crear.",
+ * example=2
+ * ),
+ * @OA\Property(
+ * property="number_of_children",
+ * type="integer",
+ * description="Número de hijos para cada nodo padre creado.",
+ * example=2
+ * ),
+ 
+ * )
+ * @OA\SecurityScheme(
+ * securityScheme="bearerAuth", 
+ * type="http",
+ * scheme="bearer",
+ * bearerFormat="JWT", 
+ * description="Introduzca el token JWT en el formato Bearer {token}"
+ * )
  */
 class NodeController extends Controller
 {
@@ -73,17 +98,21 @@ class NodeController extends Controller
      * @OA\Post(
      *   path="/api/nodes",
      *   summary="Crea uno o varios nodos.",
-     *   @OA\RequestBody(
-     *     required=true,
-     *     @OA\JsonContent(
-     *       type="object",
-     *       @OA\Property(
-     *         property="nodes",
-     *         type="array",
-     *         @OA\Items(ref="#/components/schemas/NodeInput")
-     *       )
-     *     )
-     *   ),
+     * @OA\Parameter(
+     * name="Accept-Language",
+     * in="header",
+     * description="El código de idioma preferido para las respuestas (e.g., es, en).",
+     * required=true,
+     * @OA\Schema(
+     * type="string",
+     * default="es"
+     * )
+     * ),
+    * @OA\RequestBody(
+     * required=true,
+     * description="Datos para la creación de nuevos nodos.",
+     * @OA\JsonContent(ref="#/components/schemas/NodeCreationRequest")
+     * ),
      *   @OA\Response(
      *     response=201,
      *     description="Nodos creados",

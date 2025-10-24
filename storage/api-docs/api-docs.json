@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost",
+            "url": "http://127.0.0.1:8000/",
             "description": "Servidor de la API"
         }
     ],
@@ -60,20 +60,25 @@
             "post": {
                 "summary": "Crea uno o varios nodos.",
                 "operationId": "4211f0fc512d4ae4547f7ead6fbbfed3",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "El código de idioma preferido para las respuestas (e.g., es, en).",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "es"
+                        }
+                    }
+                ],
                 "requestBody": {
+                    "description": "Datos para la creación de nuevos nodos.",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "nodes": {
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/components/schemas/NodeInput"
-                                        }
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/NodeCreationRequest"
                             }
                         }
                     }
@@ -180,6 +185,40 @@
                     }
                 },
                 "type": "object"
+            },
+            "NodeCreationRequest": {
+                "title": "Parámetros de Creación de Nodos",
+                "required": [
+                    "number_of_parent",
+                    "number_of_children"
+                ],
+                "properties": {
+                    "number_of_parent": {
+                        "description": "Número de nodos padre a crear.",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "number_of_children": {
+                        "description": "Número de hijos para cada nodo padre creado.",
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "csrf_token": {
+                "type": "apiKey",
+                "description": "Token CSRF requerido por Laravel para solicitudes POST-PUT-DELETE.",
+                "name": "X-CSRF-TOKEN",
+                "in": "header"
+            },
+            "bearerAuth": {
+                "type": "http",
+                "description": "Introduzca el token JWT en el formato Bearer {token}",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     }

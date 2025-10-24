@@ -68,10 +68,33 @@ Comprobaciones:
 - php artisan route:list
 - Revisar logs en storage/logs/laravel.log
 
-## Notas y recomendaciones
-- No subir `.env` al repositorio.
-- Limitar parámetros costosos (ej. `depth`) para proteger el rendimiento.
-- Usar HTTPS y credenciales seguras en producción.
-- Hacer backups de la BD antes de operaciones de riesgo.
+## Pruebas opcionales con Postman
+
+1. Archivo de colección:
+   - Ruta en el proyecto: c:\wamp64\www\node-tree-api\node_tree_api.postmant_collection.json
+
+2. Importar en Postman:
+   - Abrir Postman → Import → File → seleccionar el JSON de la ruta anterior.
+
+3. Crear entorno (Environment) en Postman:
+   - Variable: base_url
+   - Valor ejemplo: http://127.0.0.1:8000
+   - (Opcional) Variable: X-Timezone con valor ejemplo: America/Argentina/Buenos_Aires
+
+4. Usar la colección/importada:
+   - GET nodos con profundidad:
+     URL: {{base_url}}/api/nodes?depth=2
+     Header opcional: X-Timezone: {{X-Timezone}}
+   - DELETE nodo:
+     URL: {{base_url}}/api/nodes/{{id}}
+     Método: DELETE
+
+5. Ejecutar collection runner (opcional):
+   - Collection Runner → seleccionar la colección → seleccionar entorno → Run.
+   - Para pruebas automatizadas, usar CSV/JSON con variables (por ejemplo `id`) en el runner.
+
+Notas rápidas:
+- Asegurarse de que la API esté corriendo (php artisan serve) y que `.env` tenga la configuración de DB correcta.
+- Si cambia el host/puerto actualice la variable base_url en el entorno de Postman.
 
 Fin — guía reducida para desplegar y verificar la aplicación rápidamente.

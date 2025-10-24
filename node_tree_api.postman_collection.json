@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "15038c25-0901-4e5a-b026-40eb02e9f892",
+		"name": "node_tree_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13042210"
+	},
+	"item": [
+		{
+			"name": "index",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "es_ES",
+						"type": "text"
+					},
+					{
+						"key": "X-Timezone",
+						"value": "Asia/Dubai",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    //\"existing_node_id\":8, //Si quiero añadir nodos hijos a uno existente.\r\n    \"number_of_parent\": 2,\r\n    \"number_of_children\": 2\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/nodes?depth=3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nodes"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "es_ES",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    //\"existing_node_id\":8, //Si quiero añadir nodos hijos a uno existente.\r\n    \"number_of_parent\": 2,\r\n    \"number_of_children\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/nodes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nodes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/nodes/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nodes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

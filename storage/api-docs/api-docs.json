@@ -1,0 +1,186 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentación de la API de Nodos",
+        "description": "API para gestionar la estructura de nodos.",
+        "contact": {
+            "email": "soporte@ejemplo.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/",
+            "description": "Servidor de la API"
+        }
+    ],
+    "paths": {
+        "/api/nodes": {
+            "get": {
+                "summary": "Obtiene la lista de nodos raíz con hijos anidados.",
+                "operationId": "6a49c5145f15e738bcec4f33191ed0c4",
+                "parameters": [
+                    {
+                        "name": "depth",
+                        "in": "query",
+                        "description": "Nivel de profundidad para cargar las relaciones de hijos.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1,
+                            "maximum": 5,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/NodeResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetros inválidos"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crea uno o varios nodos.",
+                "operationId": "4211f0fc512d4ae4547f7ead6fbbfed3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nodes": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/NodeInput"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Nodos creados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/NodeResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validación fallida"
+                    }
+                }
+            }
+        },
+        "/api/nodes/{id}": {
+            "delete": {
+                "summary": "Elimina un nodo si no tiene hijos.",
+                "operationId": "ec21ebe288c34a4302229c6bc806f6e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Nodo eliminado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No se puede eliminar porque tiene hijos"
+                    },
+                    "404": {
+                        "description": "No encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "NodeResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NodeResource"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "NodeInput": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
